@@ -1,3 +1,4 @@
+# Visual Studio
 /.vs/
 /x64/
 /Debug/
@@ -7,7 +8,60 @@
 *.VC.db
 *.VC.VC.opendb
 *.ipch
+
+# Compiled object files
+*.d
+*.slo
+*.lo
+*.o
 *.obj
-*.pdb
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Linker/debugger files
 *.ilk
+*.pdb
+*.dwo
+
+# Compiled libraries
+*.so
+*.dylib
+*.dll
+*.so.*
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
 *.exe
+*.out
+*.app
+
+# Build directories
+build/
+Build/
+build-*/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+
+# vcpkg
+vcpkg_installed/
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+*.swp
+
+# Test output and cache
+Testing/
+.cache/
