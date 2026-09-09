@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompileTest", "chapters\Com
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter_ProgrammersIce", "chapters\Chapter_ProgrammersIce\Chapter_ProgrammersIce.vcxproj", "{E12A4C0F-6B66-45A4-A4A4-6B38B8A42DD1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter_GoalArray", "chapters\Chapter_GoalArray\Chapter_GoalArray.vcxproj", "{A4C6C8D4-6E4E-4DB8-9E46-7E01F9841A7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -32,6 +34,10 @@ Global
 		{E12A4C0F-6B66-45A4-A4A4-6B38B8A42DD1}.Debug|x64.Build.0 = Debug|x64
 		{E12A4C0F-6B66-45A4-A4A4-6B38B8A42DD1}.Release|x64.ActiveCfg = Release|x64
 		{E12A4C0F-6B66-45A4-A4A4-6B38B8A42DD1}.Release|x64.Build.0 = Release|x64
+		{A4C6C8D4-6E4E-4DB8-9E46-7E01F9841A7D}.Debug|x64.ActiveCfg = Debug|x64
+		{A4C6C8D4-6E4E-4DB8-9E46-7E01F9841A7D}.Debug|x64.Build.0 = Debug|x64
+		{A4C6C8D4-6E4E-4DB8-9E46-7E01F9841A7D}.Release|x64.ActiveCfg = Release|x64
+		{A4C6C8D4-6E4E-4DB8-9E46-7E01F9841A7D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
