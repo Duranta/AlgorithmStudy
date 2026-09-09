@@ -191,6 +191,94 @@ vector<vector<int>> solution(int r, int c)
 	return grid;
 }
 
+/*
+==================== 다른 풀이 ====================
+solution2 풀이
+
+기존 풀이처럼 방향별 for문을 여러 개 나누지 않고, 문제의 이동 순서를
+방향 배열 하나로 표현한다.
+
+왼쪽, 아래, 오른쪽, 위 한 칸,
+왼쪽, 위, 오른쪽, 아래 한 칸
+
+위 8단계를 반복하면서 다음 칸이 격자 안에 있고 아직 방문하지 않았다면
+숫자를 채운다. 위/아래 한 칸 이동만 한 번 이동하고, 나머지는 막힐 때까지 이동한다.
+*/
+vector<vector<int>> solution2(int r, int c)
+{
+	// r행 c열의 빈 격자를 만든다.
+	vector<vector<int>> grid(r, vector<int>(c, 0));
+	// 격자에 채워야 하는 전체 칸의 개수다.
+	const int gridSize = r * c;
+
+	// 문제에서 정한 8단계 이동 순서다.
+	const array<Point, 8> directions =
+	{
+		Point{0, -1},  // 왼쪽
+		Point{1, 0},   // 아래
+		Point{0, 1},   // 오른쪽
+		Point{-1, 0},  // 위 한 칸
+		Point{0, -1},  // 왼쪽
+		Point{-1, 0},  // 위
+		Point{0, 1},   // 오른쪽
+		Point{1, 0}    // 아래 한 칸
+	};
+
+	// 우측 상단에서 시작한다.
+	Point cur{0, c - 1};
+	// 첫 번째 숫자를 시작 위치에 기록한다.
+	int num = 1;
+	grid[cur.rows][cur.cols] = num;
+
+	// 모든 칸을 채울 때까지 8단계 이동을 반복한다.
+	int directionIndex = 0;
+	while (num < gridSize)
+	{
+		// 현재 단계에서 사용할 이동 방향을 가져온다.
+		const Point direction = directions[directionIndex];
+		// 4번째와 8번째 방향은 한 칸만 이동한다.
+		const bool oneStep = directionIndex == 3 || directionIndex == 7;
+		// 한 칸 이동 방향이 몇 번 이동했는지 기록한다.
+		int stepCount = 0;
+
+		// 긴 방향은 막힐 때까지, 한 칸 방향은 한 번만 이동한다.
+		while (num < gridSize)
+		{
+			// 현재 방향으로 이동했을 때의 다음 위치를 계산한다.
+			const int nextRow = cur.rows + direction.rows;
+			const int nextCols = cur.cols + direction.cols;
+
+			// 격자 밖이거나 이미 숫자가 채워진 칸이면 현재 방향을 종료한다.
+			if (nextRow < 0 || nextRow >= r ||
+				nextCols < 0 || nextCols >= c ||
+				grid[nextRow][nextCols] != 0)
+			{
+				break;
+			}
+
+			// 계산한 다음 위치를 현재 위치로 갱신한다.
+			cur.rows = nextRow;
+			cur.cols = nextCols;
+			// 현재 위치에 다음 번호를 기록한다.
+			grid[cur.rows][cur.cols] = ++num;
+			// 현재 방향으로 이동한 횟수를 증가시킨다.
+			++stepCount;
+
+			// 위/아래 한 칸 이동은 한 번 이동하면 방향을 종료한다.
+			if (oneStep && stepCount == 1)
+			{
+				break;
+			}
+		}
+
+		// 다음 방향 단계로 이동하고, 8단계가 끝나면 다시 0단계로 돌아간다.
+		directionIndex = (directionIndex + 1) % directions.size();
+	}
+
+	// 숫자가 채워진 최종 격자를 반환한다.
+	return grid;
+}
+
 int main()
 {
 	const vector<vector<int>> expected =
@@ -202,7 +290,16 @@ int main()
 		{8, 9, 10, 11}
 	};
 
+	const vector<vector<int>> expected2 =
+	{
+		{5, 4, 3, 2, 1},
+		{6, 15, 14, 13, 12},
+		{7, 8, 9, 10, 11}
+	};
+
 	assert(solution(5, 4) == expected);
+	assert(solution2(5, 4) == expected);
+	assert(solution2(3, 5) == expected2);
 	cout << "C-grid solution verified" << '\n';
 	return 0;
 }
