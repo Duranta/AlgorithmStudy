@@ -53,55 +53,72 @@ using namespace std;
 
 namespace Run_Example_06
 {
+	vector<int> solution(int N, vector<int> stages);
 	void sub_main()
 	{
+		//vector<int> stages = { 2, 1, 2, 6, 2, 4, 3, 3 };
+		vector<int> stages = { 4, 4, 4, 4, 4 };
 
+		solution(4, stages);
 	}
 
+	// 복잡하게 풀면 안되는구나
 	vector<int> solution(int N, vector<int> stages) {
 		vector<int> answer;
+		answer.resize(N);
 
 		// 최적화를 위해 오름차순으로 정리    
 		sort(stages.begin(), stages.end());
 		// 확률 계산에 사용
-		vector<pair<int,double>> persent;
+		vector<pair<int, double>> persent;
 		persent.reserve(N);
-		answer.resize(0);
 		// 확률 계산에 사용될 N값
-		int current_n = N;
 		// 루틴안에서 사용될 N 값
 		int cache_stage = 1;
 
-		for (int i = 0; i < N; i++)
-		{
-			pair<int, double> temp;
-			// 다음 스테이지에 대한 처리
-			if (cache_stage == stages[i] + 1)
-			{
-				// 스테이지 번호
-				temp.first = cache_stage;
-				// 확률
-				temp.second = i / current_n;
-				current_n = current_n - i;
-				++cache_stage;
-			}
-			// 스테이지를 한단계 이상 넘겼을 때  
-			else if(cache_stage != stages[i])
-			{
-				temp.first = cache_stage;
-				temp.second = 0;
-				++cache_stage;
-			}
+		vector<int> stageCount;
+		// 인덱스가 1부터 시작 하닌깐.
+		stageCount.resize(N + 1, 0);
 
-			persent.push_back(temp);
+		for (int i = 0; i < stages.size(); i++)
+		{
+			if (stages[i] < N + 1)
+			{
+				stageCount[stages[i]]++;
+			}
 		}
 
-		sort(persent.begin(), persent.end(), [](double a, double b) 
+		int current_n = stages.size();
+
+		for (int i = 1; i < N + 1; i++)
+		{
+			pair<int, double> stage_data;
+			stage_data.first = i;
+
+			// 0 인 경우를 처리 안하면 문제가 생김.
+			if (current_n == 0)
 			{
-				return a < b;
-			} 
-		);
-		
+				stage_data.second = 0;
+			}
+			else
+			{
+				stage_data.second = static_cast<double>(stageCount[i]) / static_cast<double>(current_n);
+			}
+
+			current_n = current_n - stageCount[i];
+			persent.push_back(stage_data);
+		}
+
+		sort(persent.begin(), persent.end(),
+			[](const pair<int, double>& a, const pair<int, double>& b)
+			{
+				if (a.second == b.second)
+				{
+					return a.first < b.first;
+				}
+				return a.second > b.second;
+			});
+
 		for (int i = 0; i < N; i++)
 		{
 			answer[i] = persent[i].first;
@@ -110,5 +127,48 @@ namespace Run_Example_06
 		return answer;
 	}
 
+
+	//vector<int> solution2(int N, vector<int> stages) {
+	//	vector<int> temp(N + 2, 0);
+
+	//	for (int stage : stages)
+	//	{
+	//		++temp[stage];
+	//	}
+	//	int total = stages.size();
+
+	//	vector<pair<int, float>> success(N + 2, { 0, 0.0f });
+
+	//	for (int i = 1; i <= N; ++i)
+	//	{
+	//		float rate = 000.0;
+
+	//		success[i].first = i;
+	//		success[i].second = 0;
+	//		if (temp[i] > 0)
+	//		{
+	//			success[i].second = (double)temp[i] / (double)total;
+	//		}
+	//		success[i].first = i;
+
+	//		total = total - temp[i];
+	//	}
+	//	sort(success.begin() + 1, success.begin() + N + 1,
+	//		[](const pair<int, float>& a, const pair<int, float>& b)
+	//		{
+	//			if (a.second == b.second)
+	//			{
+	//				return a.first < b.first;
+	//			}
+	//			return a.second > b.second;
+	//		});
+
+	//	vector<int> answer;
+	//	for (int i = 1; i <= N; ++i)
+	//	{
+	//		answer.push_back(success[i].first);
+	//	}
+	//	return answer;
+	//}
 
 }
